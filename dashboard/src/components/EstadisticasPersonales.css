@@ -1,0 +1,40 @@
+.estadisticas-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+}
+
+.estadisticas-principales p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.estadisticas-dificultad ul {
+  list-style: none;
+  padding: 0;
+}
+
+.estadisticas-dificultad li {
+  margin: 3px 0;
+}
+
+.grafico-horas {
+  margin-top: 20px;
+}
+
+.vista-botones {
+  margin-bottom: 10px;
+}
+
+.vista-botones button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.vista-botones button.activo {
+  background-color: #8884d8;
+  color: white;
+}
