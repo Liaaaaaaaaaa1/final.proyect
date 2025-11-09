@@ -2,17 +2,20 @@ import express from "express";
 import { registerUser, loginUser } from "../controllers/authController.js";
 import nodemailer from "nodemailer";
 import User from "../models/User.js";
-import bcrypt from "bcryptjs"; // ✅ Para hashear la nueva contraseña
+import bcrypt from "bcryptjs"; // Para hashear la nueva contraseña
+import dotenv from "dotenv"; 
+
+dotenv.config();
 
 const router = express.Router();
 
-// ✅ Ruta para registrar usuario
+// Ruta para registrar usuario
 router.post("/register", registerUser);
 
-// ✅ Ruta para iniciar sesión
+// Ruta para iniciar sesión
 router.post("/login", loginUser);
 
-// ✅ Ruta para solicitar restablecimiento de contraseña
+// Ruta para solicitar restablecimiento de contraseña
 router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
 
@@ -22,21 +25,21 @@ router.post("/forgot-password", async (req, res) => {
       return res.status(404).json({ msg: "Correo no encontrado" });
     }
 
-    // Enlace temporal
-    const resetLink = `http://localhost:5173/reset-password?email=${email}`;
+    // Enlace de recuperación, apunta a tu frontend en GitHub Pages
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password?email=${email}`;
 
-    // Configuración del transporte de correo
+    // Configuración del transporte de correo usando variables de entorno
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "gexstudioteam01@gmail.com",
-        pass: "xqrxoqqfmmnladqt",
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
       },
     });
 
     // Enviar el correo
     await transporter.sendMail({
-      from: "gexstudioteam01@gmail.com",
+      from: process.env.GMAIL_USER,
       to: email,
       subject: "Recuperar contraseña",
       html: `
@@ -78,6 +81,3 @@ router.post("/reset-password", async (req, res) => {
 });
 
 export default router;
-
-
-
