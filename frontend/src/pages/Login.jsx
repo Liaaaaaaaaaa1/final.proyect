@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import InputField from "../components/InputField";
+import PasswordInput from "../components/PasswordInput"; 
 import Button from "../components/Button";
 import FormFooter from "../components/FormFooter";
 import "../styles/login.css";
 
 function Login() {
-  const [email, setEmail] = useState(""); // Usamos email en vez de username
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const navigate = useNavigate();
@@ -43,11 +44,9 @@ function Login() {
 
       alert(`✅ Bienvenido, ${data.username}!`);
 
-      // Guardar email si "Recuérdame" está activo
       if (remember) localStorage.setItem("savedEmail", email);
       else localStorage.removeItem("savedEmail");
 
-      // Redirigir al home
       navigate("/home");
     } catch (err) {
       console.error(err);
@@ -60,6 +59,7 @@ function Login() {
       <form onSubmit={handleLogin}>
         <h1>Ingreso</h1>
 
+         {/*Email*/}
         <InputField
           type="email"
           placeholder="Email"
@@ -67,8 +67,8 @@ function Login() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <InputField
-          type="password"
+         {/*Contraseña con opción de mostrar/ocultar */}
+        <PasswordInput
           placeholder="Contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -84,7 +84,6 @@ function Login() {
             Recuérdame
           </label>
 
-          {/* 🔹 Aquí se vuelve a agregar el enlace a "Olvidé mi contraseña" */}
           <Link to="/forgot-password" className="forgot-link">
             ¿Olvidaste tu contraseña?
           </Link>
@@ -103,4 +102,3 @@ function Login() {
 }
 
 export default Login;
-

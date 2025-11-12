@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
+import PasswordInput from "../components/PasswordInput";
+import PasswordRules from "../components/PasswordRules"; 
 import Button from "../components/Button";
 import FormFooter from "../components/FormFooter";
 import "../styles/register.css";
@@ -12,11 +14,33 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
+  const validatePassword = (password) => {
+    const minLength = 8;
+    const maxLength = 12;
+    const hasNumber = /\d/.test(password);
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+
+    if (password.length < minLength || password.length > maxLength) {
+      return `La contraseña debe tener entre ${minLength} y ${maxLength} caracteres.`;
+    }
+    if (!hasNumber) return "La contraseña debe incluir al menos un número.";
+    if (!hasUppercase) return "La contraseña debe incluir al menos una letra mayúscula.";
+    if (!hasLowercase) return "La contraseña debe incluir al menos una letra minúscula.";
+    return null;
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
       alert("❌ Las contraseñas no coinciden");
+      return;
+    }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      alert(`❌ ${passwordError}`);
       return;
     }
 
@@ -35,7 +59,7 @@ function Register() {
       }
 
       alert("✅ Registro exitoso. Ahora puedes iniciar sesión.");
-      navigate("/login"); // Redirigir al login
+      navigate("/login");
     } catch (err) {
       console.error(err);
       alert("❌ Error de conexión con el servidor");
@@ -61,19 +85,20 @@ function Register() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <InputField
-          type="password"
+        <PasswordInput
           placeholder="Contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <InputField
-          type="password"
+        <PasswordInput
           placeholder="Confirmar contraseña"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
+
+        {/*Reglas de validación de contraseña*/}
+        <PasswordRules password={password} />
 
         <Button type="submit" text="Crear cuenta" />
 
@@ -88,4 +113,3 @@ function Register() {
 }
 
 export default Register;
-
