@@ -1,14 +1,23 @@
 import express from "express";
-import { registerUser, loginUser } from "../controllers/authController.js";
+import {
+  registerUser,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+} from "../controllers/authController.js";
 
 const router = express.Router();
 
-// Ruta POST para registrar usuario
-// /api/auth/register
+// 🔹 Registro
 router.post("/register", registerUser);
 
-// Ruta POST para login
-// /api/auth/login
+// 🔹 Login
 router.post("/login", loginUser);
+
+// 🔹 Olvidar contraseña (envía correo)
+router.post("/forgot-password", forgotPassword);
+
+// 🔹 Restablecer contraseña (desde enlace)
+router.post("/reset-password", resetPassword);
 
 export default router;
